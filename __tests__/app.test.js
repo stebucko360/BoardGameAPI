@@ -135,15 +135,15 @@ describe('GET /api/reviews', ()=>{
         })
     });
 
-    test('200: responds with array of objects sorted by title', ()=>{
+    // test('200: responds with array of objects sorted by title', ()=>{
 
-        return request(app)
-        .get('/api/reviews?sort_by=title')
-        .expect(200)
-        .then((result)=>{
-            expect(result.body.reviews).toBeSortedBy('title');
-        });
-    });
+    //     return request(app)
+    //     .get('/api/reviews?sort_by=title')
+    //     .expect(200)
+    //     .then((result)=>{
+    //         expect(result.body.reviews).toBeSortedBy('title');
+    //     });
+    // });
 
     test('200: responds with array of objects sorted by category', ()=>{
 
@@ -202,10 +202,10 @@ describe('GET api/reviews/:review_id/comments', ()=>{
     test('200: responds with an array of comments for the given review_id', ()=>{
 
         return request(app)
-        .get('/api/reviews/1/comments')
+        .get('/api/reviews/3/comments')
         .expect(200)
         .then((result)=>{
-            expect(result.body).toBeInstanceOf(Array);
+            expect(result.body.review).toBeInstanceOf(Array);
             result.body.review.forEach((object)=>{
                 expect(object).toEqual(
                     expect.objectContaining({
@@ -220,4 +220,29 @@ describe('GET api/reviews/:review_id/comments', ()=>{
 
         })
     });
+    describe('ERROR handling', ()=>{
+        test('400: if passed a review_id that doesnt exist, return No comments with this ID', ()=>{
+
+            return request(app)
+            .get('/api/reviews/1/comments')
+            .expect(400)
+            .then((result)=>{
+                expect(result.body).toEqual({msg: 'No comments with this ID'})
+            })
+        })
+    })
 });
+
+describe('POST /api/reviews/:review_id/comments', ()=>{
+    test('201: If passed a username and comment, post to table and return posted comment', ()=>{
+
+        return request(app)
+        .post('/api/reviews/12/comments')
+        .send({username: 'dav3rid', body: 'Big setup but great game, especially with the expansions'})
+        .expect(201)
+        .then((result)=>{
+            expect(result.body.review).toBeInstanceOf(Object);
+
+        })
+    })
+})

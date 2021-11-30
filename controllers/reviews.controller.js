@@ -1,4 +1,4 @@
-const {getReviewById, editVotesById, getReviews} = require('../models/reviews.model');
+const {getReviewById, editVotesById, getReviews, getCommentsById, addComment} = require('../models/reviews.model');
 
 exports.fetchReviewById = (req, res, next) =>{
     const {review_id} = req.params;
@@ -25,6 +25,27 @@ exports.fetchReviews = (req, res, next) => {
 
     getReviews(sort_by, order).then((result)=>{
         res.status(200).send({reviews: result})
+    }).catch((err)=>{
+        next(err)
+    });
+};
+
+exports.fetchCommentsById = (req, res, next) => {
+    const review_id = req.params.review;
+
+    getCommentsById(review_id).then((result)=>{
+        res.status(200).send({review: result})
+    }).catch((err)=>{
+        next(err)
+    });
+};
+
+exports.postComment = (req, res, next) => {
+    const review_id = req.params.review;
+    const {username, body} = req.body;
+console.log(body);
+    addComment(review_id, username, body).then((result)=>{
+        res.status(201).send({review: result})
     }).catch((err)=>{
         next(err)
     });

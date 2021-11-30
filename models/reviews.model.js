@@ -58,3 +58,26 @@ exports.getReviews = (sort_by = 'created_at', order = 'asc', category)=>{
         return result.rows;
     })
 };
+
+exports.getCommentsById = (review_id) => {
+    
+    return db.query(`SELECT comment_id, votes, created_at, author, body
+    FROM comments WHERE review_id = $1;`, [review_id])
+    .then((result)=>{
+        if(result.rows.length === 0){
+            return Promise.reject({status: 400, msg: 'No comments with this ID'})
+        }
+        return result.rows;
+    })
+};
+
+exports.addComment = (review_id, username, body) => {
+
+    return db.query(`INSERT INTO comments
+    (author, review_id, body)
+    VALUES ($1, $2, $3)
+    RETURNING *;`, [username, review_id, body])
+    .then((result)=>{
+        return result.rows[0]
+    });
+};
