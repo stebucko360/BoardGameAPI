@@ -134,4 +134,66 @@ describe('GET /api/reviews', ()=>{
             })
         })
     });
+
+    test('200: responds with array of objects sorted by title', ()=>{
+
+        return request(app)
+        .get('/api/reviews?sort_by=title')
+        .expect(200)
+        .then((result)=>{
+            expect(result.body.reviews).toBeSortedBy('title');
+        });
+    });
+
+    test('200: responds with array of objects sorted by category', ()=>{
+
+        return request(app)
+        .get('/api/reviews?sort_by=category')
+        .expect(200)
+        .then((result)=>{
+            expect(result.body.reviews).toBeSortedBy('category');
+        });
+    });
+
+    test('200: responds with array of objects sorted by category descending', ()=>{
+
+        return request(app)
+        .get('/api/reviews?sort_by=category&order=desc')
+        .expect(200)
+        .then((result)=>{
+            expect(result.body.reviews).toBeSortedBy('category', {descending: true});
+        });
+    });
+
+    test('200: responds with array of objects where category = social deduction', ()=>{
+
+        return request(app)
+        .get('/api/reviews?category=social deduction')
+        .expect(200)
+        .then((result)=>{
+            expect(result.body.reviews.length).toBe(13)
+    });
+});
+
+    describe('ERROR handling', ()=>{
+        test('400: if passed an invalid sort query, return "Invalid sort query"', ()=>{
+
+            return request(app)
+        .get('/api/reviews?sort_by=SQLINJ')
+        .expect(400)
+        .then((result)=>{
+            expect(result.body).toEqual({msg: 'Invalid sort query'});
+        });
+        });
+
+        test('400: if passed an invalid order query, return "Invalid order query"', ()=>{
+
+            return request(app)
+        .get('/api/reviews?order=SQLINJ')
+        .expect(400)
+        .then((result)=>{
+            expect(result.body).toEqual({msg: 'Invalid order query'});
+        });
+        });
+    })
 });

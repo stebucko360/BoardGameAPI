@@ -32,13 +32,30 @@ exports.editVotesById = (review_id, newVotes)=>{
     });
 };
 
-exports.getReviews = ()=>{
-    return db.query(`SELECT owner, title, reviews.review_id, category, review_img_url,
+exports.getReviews = (sort_by = 'created_at', order = 'asc', category)=>{
+    if(!['title', 'owner', 'review_id', 'category', 'review_img_url', 'created_at', 'votes', 'count'].includes(sort_by)){
+        return Promise.reject({status: 400, msg: 'Invalid sort query'})
+    }
+    if(!['asc', 'desc'].includes(order)){
+        return Promise.reject({status: 400, msg: 'Invalid order query'})
+    }
+
+    let queryValues = [];
+    let queryString = `SELECT owner, title, reviews.review_id, category, review_img_url,
     reviews.created_at, reviews.votes, COUNT(comments.review_id ) AS comment_count FROM reviews LEFT JOIN comments 
     ON comments.review_id = reviews.review_id GROUP BY owner, title, reviews.review_id, category, review_img_url,
-    reviews.created_at, reviews.votes`)
+    reviews.created_at, reviews.votes` 
+    
+    if(category){
+        queryValues.push(category);
+        queryString += ` WHERE category = $1`
+    };
+    
+    queryString += ` ORDER BY ${sort_by} ${order};`
+
+    return db.query(queryString, queryValues)
     .then((result)=>{
         console.log(result.rows);
         return result.rows;
     })
-}
+};

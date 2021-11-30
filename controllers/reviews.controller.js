@@ -21,8 +21,9 @@ exports.changeVotesById = (req, res, next) => {
 };
 
 exports.fetchReviews = (req, res, next) => {
-    
-    getReviews().then((result)=>{
+    const {sort_by, order, category} = req.query;
+
+    getReviews(sort_by, order).then((result)=>{
         res.status(200).send({reviews: result})
     }).catch((err)=>{
         next(err)
