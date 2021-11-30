@@ -63,3 +63,49 @@ describe('GET /api/categories', ()=>{
         })
     })
 });
+
+describe('PATCH /api/reviews/review_id', ()=>{
+    test('201: successfully patch the requested user_id with the requested amount of votes', ()=>{
+
+        return request(app)
+        .patch('/api/reviews/3')
+        .send({inc_votes: 1})
+        .expect(201)
+        .then((result)=>{
+            expect(result.body.review.votes).toBe(6);
+        })
+    });
+    test('201: successfully patch the requested user_id with the requested amount of votes', ()=>{
+
+        return request(app)
+        .patch('/api/reviews/3')
+        .send({inc_votes: -1})
+        .expect(201)
+        .then((result)=>{
+            expect(result.body.review.votes).toBe(4);
+        })
+    });
+    describe('ERROR handling', ()=>{
+        test('400: if not passed the correct key/value return bad request', ()=>{
+
+            return request(app)
+            .patch('/api/reviews/3')
+            .send({wrongKey: 1})
+            .expect(400)
+            .then((result)=>{
+                expect(result.body).toEqual({msg: 'Invalid vote key'})
+            })
+        });
+        test('400: if not passed the correct key/value return bad request', ()=>{
+
+            return request(app)
+            .patch('/api/reviews/3')
+            .send({inc_votes: 'apple'})
+            .expect(400)
+            .then((result)=>{
+                expect(result.body).toEqual({msg: 'Invalid vote value'})
+            })
+        })
+    });
+    
+});

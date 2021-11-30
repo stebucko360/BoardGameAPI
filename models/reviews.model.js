@@ -19,5 +19,15 @@ exports.getReviewById = (review_id)=>{
            return reviewObject;
 
        }
-    })
-}
+    });
+};
+
+exports.editVotesById = (review_id, newVotes)=>{
+    if(!newVotes){return Promise.reject({status: 400, msg:'Invalid vote key'})}
+    
+    return db.query(`UPDATE reviews SET votes = (votes + $1)
+    WHERE review_id = $2 RETURNING *`, [newVotes, review_id])
+    .then((result)=>{
+        return result.rows[0]
+    });
+};
