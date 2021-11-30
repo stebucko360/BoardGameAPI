@@ -135,7 +135,7 @@ describe('GET /api/reviews', ()=>{
         })
     });
 
-    test('200: responds with array of objects sorted by title', ()=>{
+    test.only('200: responds with array of objects sorted by title', ()=>{
 
         return request(app)
         .get('/api/reviews?sort_by=title')
