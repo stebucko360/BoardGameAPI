@@ -135,7 +135,7 @@ describe('GET /api/reviews', ()=>{
         })
     });
 
-    test.only('200: responds with array of objects sorted by title', ()=>{
+    test('200: responds with array of objects sorted by title', ()=>{
 
         return request(app)
         .get('/api/reviews?sort_by=title')
@@ -196,4 +196,28 @@ describe('GET /api/reviews', ()=>{
         });
         });
     })
+});
+
+describe('GET api/reviews/:review_id/comments', ()=>{
+    test('200: responds with an array of comments for the given review_id', ()=>{
+
+        return request(app)
+        .get('/api/reviews/1/comments')
+        .expect(200)
+        .then((result)=>{
+            expect(result.body).toBeInstanceOf(Array);
+            result.body.review.forEach((object)=>{
+                expect(object).toEqual(
+                    expect.objectContaining({
+                        comment_id: expect.any(Number),
+                        votes: expect.any(Number),
+                        created_at: expect.any(String),
+                        author: expect.any(String),
+                        body: expect.any(String)
+                    })
+                )
+            })
+
+        })
+    });
 });

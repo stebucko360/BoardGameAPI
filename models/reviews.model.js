@@ -55,7 +55,6 @@ exports.getReviews = (sort_by = 'created_at', order = 'asc', category)=>{
 
     return db.query(queryString, queryValues)
     .then((result)=>{
-        console.log(result.rows);
         return result.rows;
     })
 };
