@@ -17,7 +17,7 @@ https://stephen-board-game-api.herokuapp.com/api
 /api/reviews = Responds with a reviews array, containing all review objects.
 
 There are various queries available for this end point:
-- sortby = 'title', 'owner', 'review_id', 'category', 'review_img_url', 'created_at', 'votes', 'count'.
+- sort_by = 'title', 'owner', 'review_id', 'category', 'review_img_url', 'created_at', 'votes', 'count'.
 - order = asc or desc.
 - category = Specify a boardgame category and have these results returned only.
 
