@@ -12,7 +12,6 @@ exports.fetchReviewById = (req, res, next) =>{
 
     Promise.all([checkReviewIdExists(review_id), getReviewById(review_id)])
     .then(([check ,result])=>{
-        console.log(result);
         res.status(200).send({review: result})
     }).catch((err)=>{
         next(err)

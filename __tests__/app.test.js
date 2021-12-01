@@ -62,8 +62,18 @@ describe('GET /api/categories', ()=>{
             .then((result)=>{
                 expect(result.body).toEqual({msg: 'review_id does not exist'})
             })
-        })
-    })
+        });
+        test('400: if passed an invalid review_id return "Invalid review_id"', ()=>{
+            
+            return request(app)
+            .get('/api/reviews/apple')
+            .expect(400)
+            .then((result)=>{
+                expect(result.body).toEqual({msg: 'Invalid value'})
+            })
+        });
+    });
+    
 });
 
 describe('PATCH /api/reviews/review_id', ()=>{
@@ -105,7 +115,7 @@ describe('PATCH /api/reviews/review_id', ()=>{
             .send({inc_votes: 'apple'})
             .expect(400)
             .then((result)=>{
-                expect(result.body).toEqual({msg: 'Invalid vote value'})
+                expect(result.body).toEqual({msg: 'Invalid value'})
             })
         })
     });
