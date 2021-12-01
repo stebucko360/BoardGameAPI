@@ -9,7 +9,7 @@ afterAll(() => db.end());
 
 describe('GET /api/categories', ()=>{
     test('200: should return an array of categories', ()=>{
-
+        //check length or > 0
         return request(app)
         .get('/api/categories')
         .expect(200)
@@ -52,8 +52,8 @@ describe('GET /api/categories', ()=>{
     })
 
     describe('ERROR handling', ()=>{
-        test('400: if passed an invalid review_id return "Bad request"', ()=>{
-
+        test('400: if passed an invalid review_id return "Invalid review_id"', ()=>{
+            //check for 404 also
             return request(app)
             .get('/api/reviews/404')
             .expect(400)
@@ -87,7 +87,7 @@ describe('PATCH /api/reviews/review_id', ()=>{
     });
     describe('ERROR handling', ()=>{
         test('400: if not passed the correct key/value return bad request', ()=>{
-
+            //add 404 test
             return request(app)
             .patch('/api/reviews/3')
             .send({wrongKey: 1})
@@ -200,7 +200,7 @@ describe('GET /api/reviews', ()=>{
 
 describe('GET api/reviews/:review_id/comments', ()=>{
     test('200: responds with an array of comments for the given review_id', ()=>{
-
+        //check specific review id
         return request(app)
         .get('/api/reviews/3/comments')
         .expect(200)
@@ -222,7 +222,7 @@ describe('GET api/reviews/:review_id/comments', ()=>{
     });
     describe('ERROR handling', ()=>{
         test('400: if passed a review_id that doesnt exist, return No comments with this ID', ()=>{
-
+            //404 and add extra 400
             return request(app)
             .get('/api/reviews/1/comments')
             .expect(400)
