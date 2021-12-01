@@ -221,11 +221,12 @@ describe('GET /api/reviews', ()=>{
 
 describe('GET api/reviews/:review_id/comments', ()=>{
     test('200: responds with an array of comments for the given review_id', ()=>{
-        //check specific review id
+        
         return request(app)
         .get('/api/reviews/3/comments')
         .expect(200)
         .then((result)=>{
+            expect(result.body.review.length).toBe(3);
             expect(result.body.review).toBeInstanceOf(Array);
             result.body.review.forEach((object)=>{
                 expect(object).toEqual(
@@ -242,16 +243,23 @@ describe('GET api/reviews/:review_id/comments', ()=>{
         })
     });
     describe('ERROR handling', ()=>{
-        test('400: if passed a review_id that doesnt exist, return No comments with this ID', ()=>{
-            //404 and add extra 400
+        test('404: if passed a review_id that doesnt exist, return No comments with this ID', ()=>{
             return request(app)
             .get('/api/reviews/1/comments')
-            .expect(400)
+            .expect(404)
             .then((result)=>{
                 expect(result.body).toEqual({msg: 'No comments with this ID'})
             })
-        })
-    })
+        });
+        test('400: if passed a review_id that is invalid, return "Invalid value"', ()=>{
+            return request(app)
+            .get('/api/reviews/banana/comments')
+            .expect(400)
+            .then((result)=>{
+                expect(result.body).toEqual({msg: 'Invalid value'})
+            })
+        });
+    });
 });
 
 describe('POST /api/reviews/:review_id/comments', ()=>{

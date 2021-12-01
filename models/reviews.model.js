@@ -73,7 +73,7 @@ exports.getCommentsById = (review_id) => {
     FROM comments WHERE review_id = $1;`, [review_id])
     .then((result)=>{
         if(result.rows.length === 0){
-            return Promise.reject({status: 400, msg: 'No comments with this ID'})
+            return Promise.reject({status: 404, msg: 'No comments with this ID'})
         }
         return result.rows;
     })
