@@ -244,5 +244,44 @@ describe('POST /api/reviews/:review_id/comments', ()=>{
             expect(result.body.review).toBeInstanceOf(Object);
 
         })
+    });
+
+    describe('ERROR handling', ()=>{
+        test('400: if passed invalid keys, return "Bad request"', ()=>{
+
+            return request(app)
+            .post('/api/reviews/12/comments')
+            .send({invalid: 'apple', keys: 'banana'})
+            .expect(400)
+            .then((result)=>{
+                expect(result.body).toEqual({msg: "Bad Request"})
+            })
+        })
+    
+    test('400: if passed invalid data types, return "Bad request"', ()=>{
+
+        return request(app)
+        .post('/api/reviews/12/comments')
+        .send({username: 123, body: true})
+        .expect(400)
+        .then((result)=>{
+            expect(result.body).toEqual({msg: "Invalid value(s)"})
+        })
+    })
+});
+});
+
+describe('DELETE /api/comments/:comment_id', ()=>{
+    test('204: Should delete requested comment by ID and return no content', ()=>{
+
+        return request(app)
+        .delete('/api/comments/1')
+        .expect(204)
+        .then((result)=>{
+            expect(result.body).toEqual({})
+            return db.query('SELECT * FROM comments;').then((result)=>{
+                expect(result.rowCount).toBe(5);
+            })
+        })
     })
 })

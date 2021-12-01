@@ -3,6 +3,8 @@ exports.handlePSQLErrors = (err, req, res, next)=>{
         res.status(400).send({msg: 'Bad Request'})
     } else if(err.code === '22P02'){
         res.status(400).send({msg: 'Invalid vote value'})
+    } else if(err.code === '23503'){
+        res.status(400).send({msg: 'Invalid value(s)'})
     } else{
         next(err);
     };
