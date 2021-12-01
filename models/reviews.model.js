@@ -86,6 +86,7 @@ exports.addComment = (review_id, username, body) => {
     VALUES ($1, $2, $3)
     RETURNING *;`, [username, review_id, body])
     .then((result)=>{
+        console.log(result);
         return result.rows[0]
     });
 };

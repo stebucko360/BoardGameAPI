@@ -278,15 +278,15 @@ describe('POST /api/reviews/:review_id/comments', ()=>{
 
     describe('ERROR handling', ()=>{
         test('400: if passed invalid keys, return "Bad request"', ()=>{
-            //test for invalid users 404 if not exist
+            
             return request(app)
             .post('/api/reviews/12/comments')
             .send({invalid: 'apple', keys: 'banana'})
             .expect(400)
             .then((result)=>{
                 expect(result.body).toEqual({msg: "Bad Request"})
-            })
-        })
+            });
+        });
     
     test('400: if passed invalid data types, return "Invalid value(s)"', ()=>{
 
@@ -297,7 +297,18 @@ describe('POST /api/reviews/:review_id/comments', ()=>{
         .then((result)=>{
             expect(result.body).toEqual({msg: "Invalid value(s)"})
         })
-    })
+    });
+
+    test('400: if passed a review_id that doesnt exist, return "Invalid value(s)"', ()=>{
+
+        return request(app)
+        .post('/api/reviews/404/comments')
+        .send({username: 'dav3rid', body: 'Big setup but great game, especially with the expansions'})
+        .expect(400)
+        .then((result)=>{
+            expect(result.body).toEqual({msg: "Invalid value(s)"})
+        })
+    });
 });
 });
 
@@ -334,7 +345,7 @@ describe('GET /api', ()=>{
         const endPoints = {
             'GET: /api/categories': 'Responds with an array of category objects',
             'GET: /api/reviews/:review_id': 'Responds with a review object with the defined review_id',
-            'GET: /api/reviews': 'Responds with a reviews array containg all review objects',
+            'GET: /api/reviews': 'Responds with a reviews array containg all review objects; can be used with queries: sortby, order and category',
             'GET: /api/reviews/:review_id/comments': 'Responds with an array of comments for the given review_id',
             'GET: /api': 'Where you are right now!',
             'PATCH: /api/reviews/:review_id': 'Must send an object in the form of {inc_votes: number}, will respond with the patched review',
@@ -348,5 +359,5 @@ describe('GET /api', ()=>{
         .then((result)=>{
             expect(result.body).toEqual({endPoints: endPoints})
         })
-    })
+    });
 })
