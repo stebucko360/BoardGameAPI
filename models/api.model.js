@@ -1,7 +1,7 @@
 exports.getAllEndPoints = () => {
     return {
-        '\nGET: /api/categories': 'Responds with an array of category objects\n',
-        '\nGET: /api/reviews/:review_id': 'Responds with a review object with the defined review_id\n',
+        '\\nGET: /api/categories': 'Responds with an array of category objects\\n',
+        '\\nGET: /api/reviews/:review_id': 'Responds with a review object with the defined review_id\\n',
         'GET: /api/reviews': 'Responds with a reviews array containg all review objects',
         'GET: /api/reviews/:review_id/comments': 'Responds with an array of comments for the given review_id',
         'GET: /api': 'Where you are right now!',
