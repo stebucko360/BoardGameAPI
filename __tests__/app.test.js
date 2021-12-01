@@ -55,7 +55,6 @@ describe('GET /api/categories', ()=>{
 
     describe('ERROR handling', ()=>{
         test('404: if passed a review_id that does not exist return "review_id does not exist"', ()=>{
-            //check for 404 also
             return request(app)
             .get('/api/reviews/404')
             .expect(404)
@@ -99,7 +98,7 @@ describe('PATCH /api/reviews/review_id', ()=>{
     });
     describe('ERROR handling', ()=>{
         test('400: if not passed the correct key/value return bad request', ()=>{
-            //add 404 test
+            
             return request(app)
             .patch('/api/reviews/3')
             .send({wrongKey: 1})
@@ -117,7 +116,17 @@ describe('PATCH /api/reviews/review_id', ()=>{
             .then((result)=>{
                 expect(result.body).toEqual({msg: 'Invalid value'})
             })
-        })
+        });
+        test('404: if not passed a non existant review_id return', ()=>{
+
+            return request(app)
+            .patch('/api/reviews/404')
+            .send({inc_votes: '1'})
+            .expect(404)
+            .then((result)=>{
+                expect(result.body).toEqual({msg: 'review_id does not exist'})
+            })
+        });
     });
     
 });

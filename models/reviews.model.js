@@ -33,6 +33,9 @@ exports.editVotesById = (review_id, newVotes)=>{
     return db.query(`UPDATE reviews SET votes = (votes + $1)
     WHERE review_id = $2 RETURNING *`, [newVotes, review_id])
     .then((result)=>{
+        if(result.rowCount === 0) {
+            return Promise.reject({status:404, msg:'review_id does not exist'})
+        }
         return result.rows[0]
     });
 };
