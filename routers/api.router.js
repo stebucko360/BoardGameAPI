@@ -11,7 +11,7 @@ apiRouter.use('/categories', categoriesRouter);
 apiRouter.use('/reviews', reviewsRouter);
 apiRouter.use('/comments', commentsRouter);
 
-apiRouter.get('/', listAllEndPoints);
+apiRouter.route('/').get(listAllEndPoints);
     
 
 
