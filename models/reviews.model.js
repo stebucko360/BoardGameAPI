@@ -1,7 +1,6 @@
 const db = require('../db/connection');
 
 exports.getReviewById = (review_id)=>{
-    //NEEDS REFACTOR TO CHECK IS REVIEW_ID EXISTS WITH PROMISE.ALL
     return db.query(`
     SELECT reviews.owner, reviews.title, reviews.review_id, reviews.review_body, reviews.designer, reviews.review_img_url,
     reviews.category, reviews.created_at, reviews.votes FROM reviews WHERE reviews.review_id = $1;`, [review_id])
@@ -11,16 +10,22 @@ exports.getReviewById = (review_id)=>{
        return Promise.all([result, db.query(queryString, [review_id])])
     }).then(([reviewObj, commentCount])=>{
         
-       if(reviewObj.rows.length === 0){
-           return Promise.reject({status: 400, msg:'Invalid review_id'})
-       } else {
            const reviewObject = reviewObj.rows[0];
            reviewObject['comment_count'] = commentCount.rows[0].comment_count
            return reviewObject;
 
-       }
     });
 };
+
+exports.checkReviewIdExists = (review_id) => {
+    return db.query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
+    .then((result)=>{
+        if(result.rowCount === 0) {
+            return Promise.reject({status:404, msg:'review_id does not exist'})
+        }
+        else return 
+    })
+}
 
 exports.editVotesById = (review_id, newVotes)=>{
     if(!newVotes){return Promise.reject({status: 400, msg:'Invalid vote key'})}

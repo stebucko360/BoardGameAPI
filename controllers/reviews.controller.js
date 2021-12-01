@@ -1,8 +1,18 @@
-const {getReviewById, editVotesById, getReviews, getCommentsById, addComment} = require('../models/reviews.model');
+const {
+    getReviewById, 
+    editVotesById, 
+    getReviews, 
+    getCommentsById, 
+    addComment,
+    checkReviewIdExists
+} = require('../models/reviews.model');
 
 exports.fetchReviewById = (req, res, next) =>{
     const {review_id} = req.params;
-    getReviewById(review_id).then((result)=>{
+
+    Promise.all([checkReviewIdExists(review_id), getReviewById(review_id)])
+    .then(([check ,result])=>{
+        console.log(result);
         res.status(200).send({review: result})
     }).catch((err)=>{
         next(err)

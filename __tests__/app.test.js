@@ -9,11 +9,13 @@ afterAll(() => db.end());
 
 describe('GET /api/categories', ()=>{
     test('200: should return an array of categories', ()=>{
-        //check length or > 0
+        
         return request(app)
         .get('/api/categories')
         .expect(200)
         .then((result)=>{
+            
+            expect(result.body.categories.length > 0).toBe(true);
             expect(result.body.categories).toBeInstanceOf(Array);
             result.body.categories.forEach((object)=>{
                 expect(object).toEqual(
@@ -52,13 +54,13 @@ describe('GET /api/categories', ()=>{
     })
 
     describe('ERROR handling', ()=>{
-        test('400: if passed an invalid review_id return "Invalid review_id"', ()=>{
+        test('404: if passed a review_id that does not exist return "review_id does not exist"', ()=>{
             //check for 404 also
             return request(app)
             .get('/api/reviews/404')
-            .expect(400)
+            .expect(404)
             .then((result)=>{
-                expect(result.body).toEqual({msg: 'Invalid review_id'})
+                expect(result.body).toEqual({msg: 'review_id does not exist'})
             })
         })
     })
@@ -242,13 +244,14 @@ describe('POST /api/reviews/:review_id/comments', ()=>{
         .expect(201)
         .then((result)=>{
             expect(result.body.review).toBeInstanceOf(Object);
+            //test specific output (comment_id + 1)
 
         })
     });
 
     describe('ERROR handling', ()=>{
         test('400: if passed invalid keys, return "Bad request"', ()=>{
-
+            //test for invalid users 404 if not exist
             return request(app)
             .post('/api/reviews/12/comments')
             .send({invalid: 'apple', keys: 'banana'})
