@@ -258,7 +258,7 @@ describe('POST /api/reviews/:review_id/comments', ()=>{
             })
         })
     
-    test('400: if passed invalid data types, return "Bad request"', ()=>{
+    test('400: if passed invalid data types, return "Invalid value(s)"', ()=>{
 
         return request(app)
         .post('/api/reviews/12/comments')
@@ -283,5 +283,17 @@ describe('DELETE /api/comments/:comment_id', ()=>{
                 expect(result.rowCount).toBe(5);
             })
         })
-    })
-})
+    });
+    describe('ERROR handling', ()=>{
+        test('400: if comment doesnt exist return "Comment does not exist"', ()=>{
+
+            return request(app)
+            .delete('/api/comments/123')
+            .expect(400)
+            .then((result)=>{
+                expect(result.body).toEqual({msg: "Comment does not exist"})
+            })
+
+        })
+    });
+});
