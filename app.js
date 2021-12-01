@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/api', apiRouter);
-app.use('/', function(){ return {'Welcome to Stephen\'s board game API': 'please use path /api for potential routes'}})
+app.use('/', res.status(200).send({'Welcome to Stephen\'s board game API': 'please use path /api for potential routes'}))
 
 app.use(handlePSQLErrors);
 app.use(handleCustomErrors);
