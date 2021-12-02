@@ -51,15 +51,16 @@ exports.getReviews = (sort_by = 'created_at', order = 'desc', category)=>{
     let queryValues = [];
     let queryString = `SELECT owner, title, reviews.review_id, category, review_img_url,
     reviews.created_at, reviews.votes, COUNT(comments.review_id ) AS comment_count FROM reviews LEFT JOIN comments 
-    ON comments.review_id = reviews.review_id GROUP BY owner, title, reviews.review_id, category, review_img_url,
-    reviews.created_at, reviews.votes` 
+    ON comments.review_id = reviews.review_id` 
     
     if(category){
         queryValues.push(category);
         queryString += ` WHERE category = $1`
     };
+
     
-    queryString += ` ORDER BY ${sort_by} ${order};`
+    queryString += ` GROUP BY owner, title, reviews.review_id, category, review_img_url,
+    reviews.created_at, reviews.votes ORDER BY ${sort_by} ${order};`
 
     return db.query(queryString, queryValues)
     .then((result)=>{
