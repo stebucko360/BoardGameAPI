@@ -3,18 +3,12 @@ const db = require('../db/connection');
 exports.getReviewById = (review_id)=>{
     return db.query(`
     SELECT reviews.owner, reviews.title, reviews.review_id, reviews.review_body, reviews.designer, reviews.review_img_url,
-    reviews.category, reviews.created_at, reviews.votes FROM reviews WHERE reviews.review_id = $1;`, [review_id])
+    reviews.category, reviews.created_at, reviews.votes, COUNT(comments.review_id) AS comment_count FROM reviews LEFT JOIN comments 
+    ON comments.review_id = reviews.review_id WHERE reviews.review_id = $1 GROUP BY reviews.review_id;`, [review_id])
     .then((result)=>{
-        const queryString = `SELECT COUNT(review_id) AS comment_count FROM comments WHERE review_id = $1;`;
-        
-       return Promise.all([result, db.query(queryString, [review_id])])
-    }).then(([reviewObj, commentCount])=>{
-        
-           const reviewObject = reviewObj.rows[0];
-           reviewObject['comment_count'] = commentCount.rows[0].comment_count
-           return reviewObject;
-
-    });
+        return result.rows[0];
+    })
+    
 };
 
 exports.checkReviewIdExists = (review_id) => {
@@ -87,7 +81,6 @@ exports.addComment = (review_id, username, body) => {
     VALUES ($1, $2, $3)
     RETURNING *;`, [username, review_id, body])
     .then((result)=>{
-        console.log(result);
         return result.rows[0]
     });
 };

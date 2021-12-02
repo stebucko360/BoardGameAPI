@@ -165,6 +165,15 @@ describe('GET /api/reviews', ()=>{
     //         expect(result.body.reviews).toBeSortedBy('title');
     //     });
     // });
+    test('200: when not passed a sort_by or order query, resolve to defaults', ()=>{
+
+        return request(app)
+        .get('/api/reviews')
+        .expect(200)
+        .then((result)=>{
+            expect(result.body.reviews).toBeSortedBy('created_at', { descending: true});
+        });
+    })
 
     test('200: responds with array of objects sorted by category', ()=>{
 
