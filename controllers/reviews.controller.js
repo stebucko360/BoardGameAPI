@@ -4,7 +4,8 @@ const {
     getReviews, 
     getCommentsById, 
     addComment,
-    checkReviewIdExists
+    checkReviewIdExists,
+    checkCategoryExists
 } = require('../models/reviews.model');
 
 exports.fetchReviewById = (req, res, next) =>{
@@ -32,7 +33,7 @@ exports.changeVotesById = (req, res, next) => {
 exports.fetchReviews = (req, res, next) => {
     const {sort_by, order, category} = req.query;
 
-    getReviews(sort_by, order, category).then((result)=>{
+    Promise.all([checkCategoryExists(category), getReviews(sort_by, order, category)]).then(([check ,result])=>{
         res.status(200).send({reviews: result})
     }).catch((err)=>{
         next(err)

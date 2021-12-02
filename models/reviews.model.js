@@ -90,3 +90,15 @@ exports.addComment = (review_id, username, body) => {
         return result.rows[0]
     });
 };
+
+exports.checkCategoryExists = (category) =>{
+
+    if(category === undefined){return}
+    return db.query(`SELECT * FROM categories WHERE slug = $1;`, [category])
+    .then((result)=>{
+        if(result.rows.length === 0){
+            return Promise.reject({status: 404, msg: 'category doesnt exist'})
+        }
+        return result
+    });
+};

@@ -186,7 +186,7 @@ describe('GET /api/reviews', ()=>{
         });
     });
 
-    test('200: responds with array of objects where category = social deduction', ()=>{
+    test('200: responds with array of objects where category = dexterity', ()=>{
 
         return request(app)
         .get('/api/reviews?category=dexterity')
@@ -210,7 +210,28 @@ describe('GET /api/reviews', ()=>{
     });
 });
 
+    test('200: responds with an empty array if a category does exist, but no reviews have this category', ()=>{
+        
+        return request(app)
+        .get("/api/reviews?category=children's games")
+        .expect(200)
+        .then((result)=>{
+            expect(result.body.reviews.length).toBe(0);
+        });
+    });
+
     describe('ERROR handling', ()=>{
+
+        test('404 if passed a non existant category, respond "category doesnt exist"', ()=>{
+            return request(app)
+            .get("/api/reviews?category=thisisntreal")
+            .expect(404)
+            .then((result)=>{
+                expect(result.body).toEqual({msg: 'category doesnt exist'})
+            });
+        });
+
+
         test('400: if passed an invalid sort query, return "Invalid sort query"', ()=>{
 
             return request(app)
