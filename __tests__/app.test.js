@@ -189,10 +189,24 @@ describe('GET /api/reviews', ()=>{
     test('200: responds with array of objects where category = social deduction', ()=>{
 
         return request(app)
-        .get('/api/reviews?category=social deduction')
+        .get('/api/reviews?category=dexterity')
         .expect(200)
         .then((result)=>{
-            expect(result.body.reviews.length).toBe(13)
+            expect(result.body.reviews.length).toBe(1)
+            result.body.reviews.forEach((object)=>{
+                expect(object).toEqual(
+                    expect.objectContaining({
+                        owner: expect.any(String),
+                        title: expect.any(String),
+                        review_id: expect.any(Number),
+                        category: 'dexterity',
+                        review_img_url: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        comment_count: expect.any(String)
+                    })
+                )
+            })
     });
 });
 

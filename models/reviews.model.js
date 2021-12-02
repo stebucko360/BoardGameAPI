@@ -57,11 +57,11 @@ exports.getReviews = (sort_by = 'created_at', order = 'desc', category)=>{
         queryValues.push(category);
         queryString += ` WHERE category = $1`
     };
-
     
     queryString += ` GROUP BY owner, title, reviews.review_id, category, review_img_url,
     reviews.created_at, reviews.votes ORDER BY ${sort_by} ${order};`
 
+    
     return db.query(queryString, queryValues)
     .then((result)=>{
         return result.rows;
