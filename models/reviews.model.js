@@ -81,12 +81,13 @@ exports.getCommentsById = (review_id) => {
 };
 
 exports.addComment = (review_id, username, body) => {
-
+    
     return db.query(`INSERT INTO comments
     (author, review_id, body)
     VALUES ($1, $2, $3)
     RETURNING *;`, [username, review_id, body])
     .then((result)=>{
+        console.log(result);
         return result.rows[0]
     });
 };
@@ -102,3 +103,4 @@ exports.checkCategoryExists = (category) =>{
         return result
     });
 };
+

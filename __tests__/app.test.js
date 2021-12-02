@@ -337,8 +337,9 @@ describe('POST /api/reviews/:review_id/comments', ()=>{
         .send({username: 123, body: true})
         .expect(400)
         .then((result)=>{
-            expect(result.body).toEqual({msg: "Invalid value(s)"})
+            expect(result.body).toEqual({msg: 'Invalid value(s)'})
         })
+        
     });
 
     test('404: if passed a review_id that doesnt exist, return "Invalid value(s)"', ()=>{
@@ -348,7 +349,7 @@ describe('POST /api/reviews/:review_id/comments', ()=>{
         .send({username: 'dav3rid', body: 'Big setup but great game, especially with the expansions'})
         .expect(404)
         .then((result)=>{
-            expect(result.body).toEqual({msg: "Invalid value(s)"})
+            expect(result.body).toEqual({msg: "review_id does not exist"})
         })
     });
 });
@@ -425,7 +426,7 @@ describe('GET /api/users', ()=>{
     });
 });
 
-describe('GET /api/users/:username', ()=>{
+describe.skip('GET /api/users/:username', ()=>{
     test('200: Responds with a user object with the defined properties', ()=>{
 
         return request(app)

@@ -53,8 +53,8 @@ exports.fetchCommentsById = (req, res, next) => {
 exports.postComment = (req, res, next) => {
     const review_id = req.params.review;
     const {username, body} = req.body;
-
-    addComment(review_id, username, body).then((result)=>{
+Promise.all([checkReviewIdExists(review_id), addComment(review_id, username, body)])
+    .then(([,result])=>{
         res.status(201).send({review: result})
     }).catch((err)=>{
         next(err)
