@@ -40,7 +40,7 @@ exports.editVotesById = (review_id, newVotes)=>{
     });
 };
 
-exports.getReviews = (sort_by = 'created_at', order = 'asc', category)=>{
+exports.getReviews = (sort_by = 'created_at', order = 'desc', category)=>{
     if(!['title', 'owner', 'review_id', 'category', 'review_img_url', 'created_at', 'votes', 'count'].includes(sort_by)){
         return Promise.reject({status: 400, msg: 'Invalid sort query'})
     }

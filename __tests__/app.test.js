@@ -76,22 +76,22 @@ describe('GET /api/categories', ()=>{
 });
 
 describe('PATCH /api/reviews/review_id', ()=>{
-    test('201: successfully patch the requested user_id with the requested amount of votes', ()=>{
+    test('200: successfully patch the requested user_id with the requested amount of votes', ()=>{
 
         return request(app)
         .patch('/api/reviews/3')
         .send({inc_votes: 1})
-        .expect(201)
+        .expect(200)
         .then((result)=>{
             expect(result.body.review.votes).toBe(6);
         })
     });
-    test('201: successfully patch the requested user_id with the requested amount of votes', ()=>{
+    test('200: successfully patch the requested user_id with the requested amount of votes', ()=>{
 
         return request(app)
         .patch('/api/reviews/3')
         .send({inc_votes: -1})
-        .expect(201)
+        .expect(200)
         .then((result)=>{
             expect(result.body.review.votes).toBe(4);
         })
@@ -172,7 +172,7 @@ describe('GET /api/reviews', ()=>{
         .get('/api/reviews?sort_by=category')
         .expect(200)
         .then((result)=>{
-            expect(result.body.reviews).toBeSortedBy('category');
+            expect(result.body.reviews).toBeSortedBy('category', { descending: true});
         });
     });
 
@@ -226,9 +226,9 @@ describe('GET api/reviews/:review_id/comments', ()=>{
         .get('/api/reviews/3/comments')
         .expect(200)
         .then((result)=>{
-            expect(result.body.review.length).toBe(3);
-            expect(result.body.review).toBeInstanceOf(Array);
-            result.body.review.forEach((object)=>{
+            expect(result.body.comments.length).toBe(3);
+            expect(result.body.comments).toBeInstanceOf(Array);
+            result.body.comments.forEach((object)=>{
                 expect(object).toEqual(
                     expect.objectContaining({
                         comment_id: expect.any(Number),
@@ -271,7 +271,14 @@ describe('POST /api/reviews/:review_id/comments', ()=>{
         .expect(201)
         .then((result)=>{
             expect(result.body.review).toBeInstanceOf(Object);
-            //test specific output (comment_id + 1)
+            expect(result.body.review).toEqual(expect.objectContaining(
+                {"author": "dav3rid", 
+                "body": "Big setup but great game, especially with the expansions", 
+                "comment_id": 7, 
+                "created_at": "2021-12-02T00:00:00.000Z", 
+                "review_id": 12, 
+                "votes": 0} 
+            ))
 
         })
     });
@@ -299,12 +306,12 @@ describe('POST /api/reviews/:review_id/comments', ()=>{
         })
     });
 
-    test('400: if passed a review_id that doesnt exist, return "Invalid value(s)"', ()=>{
+    test('404: if passed a review_id that doesnt exist, return "Invalid value(s)"', ()=>{
 
         return request(app)
         .post('/api/reviews/404/comments')
         .send({username: 'dav3rid', body: 'Big setup but great game, especially with the expansions'})
-        .expect(400)
+        .expect(404)
         .then((result)=>{
             expect(result.body).toEqual({msg: "Invalid value(s)"})
         })
@@ -360,4 +367,45 @@ describe('GET /api', ()=>{
             expect(result.body).toEqual({endPoints: endPoints})
         })
     });
-})
+});
+
+describe('GET /api/users', ()=>{
+    test('200: Responds with an array of objects, each object should have the username property', ()=>{
+
+        return request(app)
+        .get('/api/users')
+        .expect(200)
+        .then((result)=>{
+
+            expect(result.body.users.length > 0).toBe(true);
+            expect(result.body.users.length).toBe(4);
+            result.body.users.forEach((user)=>{
+                expect(user).toEqual(
+                    expect.objectContaining({
+                        username: expect.any(String)
+                    })
+                )
+            })
+        });
+    });
+});
+
+describe('GET /api/users/:username', ()=>{
+    test('200: Responds with a user object with the defined properties', ()=>{
+
+        return request(app)
+        .get(`/api/users/mallionaire`)
+        .expect(200)
+        .then((result)=>{
+            expect(result.body.user.length > 0).toBe(true);
+            expect(result.body.user).toEqual(expect.objectContaining(
+                {
+                    username: 'mallionaire',
+                    name: 'haz',
+                    avatar_url:
+                      'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg'
+                  }
+            ))
+        });
+    });
+});

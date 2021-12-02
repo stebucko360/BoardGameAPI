@@ -23,7 +23,7 @@ exports.changeVotesById = (req, res, next) => {
     const newVotes = req.body.inc_votes;
 
     editVotesById(review_id, newVotes).then((result)=>{
-        res.status(201).send({review: result})
+        res.status(200).send({review: result})
     }).catch((err)=>{
         next(err)
     });
@@ -43,7 +43,7 @@ exports.fetchCommentsById = (req, res, next) => {
     const review_id = req.params.review;
 
     getCommentsById(review_id).then((result)=>{
-        res.status(200).send({review: result})
+        res.status(200).send({comments: result})
     }).catch((err)=>{
         next(err)
     });
