@@ -43,7 +43,7 @@ exports.fetchReviews = (req, res, next) => {
 exports.fetchCommentsById = (req, res, next) => {
     const review_id = req.params.review;
 
-    getCommentsById(review_id).then((result)=>{
+    Promise.all([checkReviewIdExists(review_id), getCommentsById(review_id)]).then(([,result])=>{
         res.status(200).send({comments: result})
     }).catch((err)=>{
         next(err)

@@ -286,13 +286,25 @@ describe('GET api/reviews/:review_id/comments', ()=>{
 
         })
     });
+
+    test('200: is passed a valid review_id but has no associated comments, return an empty array', ()=>{
+
+        return request(app)
+        .get('/api/reviews/1/comments')
+        .expect(200)
+        .then((result)=>{
+            expect(result.body.comments.length).toBe(0);
+        
+        })
+
+    })
     describe('ERROR handling', ()=>{
-        test('404: if passed a review_id that doesnt exist, return No comments with this ID', ()=>{
+        test('404: if passed a review_id that doesnt exist, return review_id does not exist', ()=>{
             return request(app)
-            .get('/api/reviews/1/comments')
+            .get('/api/reviews/404/comments')
             .expect(404)
             .then((result)=>{
-                expect(result.body).toEqual({msg: 'No comments with this ID'})
+                expect(result.body).toEqual({msg: 'review_id does not exist'})
             })
         });
         test('400: if passed a review_id that is invalid, return "Invalid value"', ()=>{
@@ -319,7 +331,7 @@ describe('POST /api/reviews/:review_id/comments', ()=>{
                 {"author": "dav3rid", 
                 "body": "Big setup but great game, especially with the expansions", 
                 "comment_id": 7, 
-                "created_at": "2021-12-02T00:00:00.000Z", 
+                "created_at": expect.any(String), 
                 "review_id": 12, 
                 "votes": 0} 
             ))

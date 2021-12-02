@@ -46,7 +46,7 @@ const seed = (data) => {
       votes INT DEFAULT 0,
       category VARCHAR(100) REFERENCES categories (slug) NOT NULL,
       owner VARCHAR(100) REFERENCES users (username) NOT NULL,
-      created_at DATE DEFAULT CURRENT_TIMESTAMP
+      created_at TIMESTAMP DEFAULT NOW()
     );`)
   })
   .then(()=>{
@@ -56,7 +56,7 @@ const seed = (data) => {
     author VARCHAR(100) REFERENCES users (username) NOT NULL,
     review_id INT REFERENCES reviews (review_id) NOT NULL,
     votes INT DEFAULT 0,
-    created_at DATE DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW(),
     body TEXT NOT NULL
   );`)
   })
