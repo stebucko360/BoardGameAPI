@@ -7,9 +7,9 @@ const app = express();
 app.use(express.json());
 
 app.use('/api', apiRouter);
-app.use('/', (req, res, next)=>{
-    res.status(200).send({msg: "🧔Welcome to Stephen's Board game API, use the endpoint /api to see all available endpoints💾"}
-    )})
+// app.use('/', (req, res, next)=>{
+//     res.status(200).send({msg: "🧔Welcome to Stephen's Board game API, use the endpoint /api to see all available endpoints💾"}
+//     )})
 
 app.use(handlePSQLErrors);
 app.use(handleCustomErrors);
