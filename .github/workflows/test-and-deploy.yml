@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: Test App.js
     steps:
-      - name: Checkout and clone repo
+      - name: Checkout and clone repos 
         uses: actions/checkout@v2
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
