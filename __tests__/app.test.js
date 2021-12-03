@@ -479,3 +479,74 @@ describe('GET /api/users/:username', ()=>{
         });
     });
 });
+
+describe('PATCH /api/comments/:comment_id', ()=>{
+    test('200: increments the comments vote by 1; responds with the updated comments', ()=>{
+
+        return request(app)
+        .patch('/api/comments/1')
+        .send({inc_votes : 1})
+        .expect(200)
+        .then((result)=>{
+            expect(result.body.comment).toEqual(expect.objectContaining({
+                comment_id: 1,
+                author: 'bainesface',
+                review_id: 2,
+                votes: 17,
+                created_at: expect.any(String),
+                body: expect.any(String)
+            }))
+        });
+    });
+
+    test('200: decrements the comments vote by 1; responds with the updated comments', ()=>{
+
+        return request(app)
+        .patch('/api/comments/1')
+        .send({inc_votes : -1})
+        .expect(200)
+        .then((result)=>{
+            expect(result.body.comment).toEqual(expect.objectContaining({
+                comment_id: 1,
+                author: 'bainesface',
+                review_id: 2,
+                votes: 15,
+                created_at: expect.any(String),
+                body: expect.any(String)
+            }))
+        });
+    });
+
+    describe('ERROR handling', ()=>{
+        test('400: if passed an invalid comment_id, respond with Invalid value', ()=>{
+            return request(app)
+            .patch('/api/comments/banana')
+            .send({inc_votes : -1})
+            .expect(400)
+            .then((result)=>{
+                expect(result.body).toEqual({msg: 'Invalid value'})
+        });
+        });
+    
+
+        test('400: if inc_votes value is invalid responds with Invalid value', ()=>{
+            return request(app)
+            .patch('/api/comments/1')
+            .send({inc_votes : true})
+            .expect(400)
+            .then((result)=>{
+                expect(result.body).toEqual({msg: 'Invalid key/value'})
+            });
+        });
+
+        test('400: if passed an invalid key, responds with Invalid value', ()=>{
+            return request(app)
+            .patch('/api/comments/1')
+            .send({vote : 1})
+            .expect(400)
+            .then((result)=>{
+                expect(result.body).toEqual({msg: 'Invalid key/value'})
+            });
+        });
+    });
+});
