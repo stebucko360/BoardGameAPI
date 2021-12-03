@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: npm install
       
-    - name: Test App.js
+    - name: Test App
       run: PGDATABASE=test_db PGUSER=Mr_test PGPASSWORD=password1 npm test
   
   deploy:
