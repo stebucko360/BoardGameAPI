@@ -64,7 +64,7 @@ In order to run tests; as part of the dependency setup you will have had to inst
 In your terminal run the command from the root of the repository " npm test ./\_\_tests\_\_/app.test.js"
 
 
-## List of endpoints:
+## Examples of endpoints:
 
 ### GET:
 
