@@ -447,14 +447,14 @@ describe('GET /api/users', ()=>{
     });
 });
 
-describe.skip('GET /api/users/:username', ()=>{
+describe('GET /api/users/:username', ()=>{
     test('200: Responds with a user object with the defined properties', ()=>{
 
         return request(app)
         .get(`/api/users/mallionaire`)
         .expect(200)
         .then((result)=>{
-            expect(result.body.user.length > 0).toBe(true);
+        
             expect(result.body.user).toEqual(expect.objectContaining(
                 {
                     username: 'mallionaire',
