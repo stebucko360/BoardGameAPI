@@ -32,6 +32,11 @@ In order to clone this repo:
 
 Find below the dependencies you require with instructions for installation:
 
+Prequisites of running this code:
+
+-Node.js
+-Postgres
+
 Use the terminal command 'npm install --prod' to install the following dependencies:
 
 <img src="__imagesreadme/depend.PNG" alt="production dependencies">
@@ -54,9 +59,9 @@ You should see the following in your terminal:
 
 ## Step 4: How to run tests
 
-In order to run tests; as part of the dependency setup you will have had to install dev dependencies as this is includs the testing package 'jest'.
+In order to run tests; as part of the dependency setup you will have had to install dev dependencies as this is includes the testing package 'jest'.
 
-In your terminal run the command from the root of the repository " npm test ./__tests__/app.test.js"
+In your terminal run the command from the root of the repository " npm test ./\_\_tests\_\_/app.test.js"
 
 
 ## List of endpoints:
