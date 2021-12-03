@@ -20,9 +20,9 @@ jobs:
         postgresql password: password1
 
       -name: Install dependencies
-        run: npm install
+      run: npm install
       -name: Test App.js
-        run: PGDATABASE=test_db PGUSER=MR_test PGPASSWORD=password1 npm test
+      run: PGDATABASE=test_db PGUSER=MR_test PGPASSWORD=password1 npm test
   
   deploy:
     runs-on: ubuntu-latest
