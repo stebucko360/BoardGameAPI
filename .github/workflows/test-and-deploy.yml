@@ -6,7 +6,9 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: 
+      - ubuntu-latest
+      - macos-latest
     steps:
       - name: Checkout and clone repo
         uses: actions/checkout@v2
