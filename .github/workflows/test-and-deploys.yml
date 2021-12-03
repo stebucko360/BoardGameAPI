@@ -9,7 +9,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout and clone repo
+      -name: Checkout and clone repo
         uses: actions/checkout@v2
 
       - name: Setup Postgres
