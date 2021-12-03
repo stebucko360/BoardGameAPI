@@ -13,10 +13,10 @@ jobs:
 
       - name: Setup Postgres
         uses: harmon758/postgresql-action@v1
-          with:
-            postgresql db: test_db
-            postgresql user: Mr_test
-            postgresql password: password1
+        with:
+          postgresql db: test_db
+          postgresql user: Mr_test
+          postgresql password: password1
 
       - name: Install dependencies
           run: npm install
