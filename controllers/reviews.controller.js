@@ -31,9 +31,9 @@ exports.changeVotesById = (req, res, next) => {
 };
 
 exports.fetchReviews = (req, res, next) => {
-    const {sort_by, order, category} = req.query;
+    const {sort_by, order, category, page, limit} = req.query;
 
-    Promise.all([checkCategoryExists(category), getReviews(sort_by, order, category)]).then(([check ,result])=>{
+    Promise.all([checkCategoryExists(category), getReviews(sort_by, order, category, page, limit)]).then(([check ,result])=>{
         res.status(200).send({reviews: result})
     }).catch((err)=>{
         next(err)

@@ -230,6 +230,16 @@ describe('GET /api/reviews', ()=>{
         });
     });
 
+    test('200: responds with an array of reviews, limited to 3 per page', ()=>{
+        
+        return request(app)
+        .get("/api/reviews?page=1&limit=3")
+        .expect(200)
+        .then((result)=>{
+            expect(result.body.reviews.length).toBe(3);
+        });
+    });
+
     describe('ERROR handling', ()=>{
 
         test('404 if passed a non existant category, respond "category doesnt exist"', ()=>{

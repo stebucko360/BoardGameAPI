@@ -34,7 +34,7 @@ exports.editVotesById = (review_id, newVotes)=>{
     });
 };
 
-exports.getReviews = (sort_by = 'created_at', order = 'desc', category)=>{
+exports.getReviews = (sort_by = 'created_at', order = 'desc', category, page, limit )=>{
     if(!['title', 'owner', 'review_id', 'category', 'review_img_url', 'created_at', 'votes', 'count'].includes(sort_by)){
         return Promise.reject({status: 400, msg: 'Invalid sort query'})
     }
@@ -58,7 +58,13 @@ exports.getReviews = (sort_by = 'created_at', order = 'desc', category)=>{
     
     return db.query(queryString, queryValues)
     .then((result)=>{
-        return result.rows;
+        if (page !== undefined && limit !== undefined) {
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit;
+            return result.rows.slice(startIndex, endIndex)
+        } else {
+            return result.rows;
+        }
     })
 };
 
