@@ -80,6 +80,7 @@ There are various queries available for this end point:
 - sort_by = 'title', 'owner', 'review_id', 'category', 'review_img_url', 'created_at', 'votes', 'count'.
 - order = asc or desc.
 - category = Specify a boardgame category and have these results returned only.
+-Pagination is now a feature of this end point. Use 'page' and 'limit' respectively to use this feature.
 
 (All of the above queries have been coded to prevent SQL injection attacks)
 
