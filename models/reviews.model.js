@@ -58,7 +58,7 @@ exports.getReviews = (sort_by = 'created_at', order = 'desc', category, page = '
     
     return db.query(queryString, queryValues)
     .then((result)=>{
-        if (page !== undefined && limit !== undefined) {
+        if (limit !== undefined) {
             const startIndex = (page - 1) * limit;
             const endIndex = page * limit;
             return result.rows.slice(startIndex, endIndex)
