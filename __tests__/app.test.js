@@ -261,7 +261,6 @@ describe('GET /api/reviews', ()=>{
             });
         });
 
-
         test('400: if passed an invalid sort query, return "Invalid sort query"', ()=>{
 
             return request(app)
