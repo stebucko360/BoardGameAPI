@@ -243,7 +243,7 @@ describe('GET /api/reviews', ()=>{
                 review_id: 7,
                 category: 'social deduction',
                 review_img_url: 'https://images.pexels.com/photos/278888/pexels-photo-278888.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-                created_at: '2021-01-25T11:16:54.963Z',
+                created_at: expect.any(String),
                 votes: 9,
                 comment_count: '0'
               })

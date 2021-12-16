@@ -51,7 +51,8 @@ You will need to create two .env files for this project: .env.test and .env.deve
 
 In order to use this API locally you will be required to seed the local database. This is a simple task; just run the following command in your terminal:
 
-"npm seed"
+"npm run setup-dbs"
+"npm run seed"
 
 You should see the following in your terminal:
 

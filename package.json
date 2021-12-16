@@ -33,7 +33,8 @@
     "pg-format": "^1.0.4"
   },
   "jest": {
-    "setupFilesAfterEnv": ["jest-sorted"]
+    "setupFilesAfterEnv": [
+      "jest-sorted"
+    ]
   }
-  
 }
