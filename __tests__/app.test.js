@@ -38,7 +38,7 @@ describe('GET /api/categories', ()=>{
             expect(result.body.review.comment_count).toBe('3');
             expect(result.body.review).toEqual(
                   {
-                        owner: 'bainesface',
+                        username: 'bainesface',
                         title: 'Ultimate Werewolf',
                         review_id: 3,
                         review_body: "We couldn't find the werewolf!",
@@ -571,4 +571,28 @@ describe('PATCH /api/comments/:comment_id', ()=>{
             });
         });
     });
+    
 });
+describe('POST /api/reviews', ()=>{
+    test('201: If passed owner (username), title, review_body, designer and a category, post to the table and respond with new object', ()=>{
+
+        return request(app)
+        .post('/api/reviews')
+        .send({owner: 'mallionaire', title: 'BloodRage', review_body: 'Fun game thats easy to pickup and setup', designer: 'Eric Lang', category: 'euro game'})
+        .expect(201)
+        .then((result)=>{
+            expect(result.body.review).toEqual(expect.objectContaining({
+                username: 'mallionaire',
+                title: 'BloodRage',
+                review_body: 'Fun game thats easy to pickup and setup',
+                designer: 'Eric Lang',
+                category: 'euro game',
+                review_img_url: expect.any(String),
+                review_id: 14,
+                votes: 0,
+                created_at: expect.any(String),
+                comment_count: "0"
+            }))
+        })
+    })
+})

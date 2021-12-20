@@ -2,7 +2,7 @@ const db = require('../db/connection');
 
 exports.getReviewById = (review_id)=>{
     return db.query(`
-    SELECT reviews.owner, reviews.title, reviews.review_id, reviews.review_body, reviews.designer, reviews.review_img_url,
+    SELECT reviews.owner AS username, reviews.title, reviews.review_id, reviews.review_body, reviews.designer, reviews.review_img_url,
     reviews.category, reviews.created_at, reviews.votes, COUNT(comments.review_id) AS comment_count FROM reviews LEFT JOIN comments 
     ON comments.review_id = reviews.review_id WHERE reviews.review_id = $1 GROUP BY reviews.review_id;`, [review_id])
     .then((result)=>{
@@ -97,6 +97,17 @@ exports.checkCategoryExists = (category) =>{
             return Promise.reject({status: 404, msg: 'category doesnt exist'})
         }
         return result
+    });
+};
+
+exports.addReview = (owner, title, review_body, designer, category)=>{
+    
+    return db.query(`INSERT INTO reviews
+    (owner, title, review_body, designer, category)
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING *;`, [owner, title, review_body, designer, category])
+    .then((result)=>{
+        return this.getReviewById(result.rows[0].review_id)
     });
 };
 

@@ -5,7 +5,8 @@ const {
     getCommentsById, 
     addComment,
     checkReviewIdExists,
-    checkCategoryExists
+    checkCategoryExists,
+    addReview
 } = require('../models/reviews.model');
 
 exports.fetchReviewById = (req, res, next) =>{
@@ -55,6 +56,15 @@ exports.postComment = (req, res, next) => {
     const {username, body} = req.body;
 Promise.all([checkReviewIdExists(review_id), addComment(review_id, username, body)])
     .then(([,result])=>{
+        res.status(201).send({review: result})
+    }).catch((err)=>{
+        next(err)
+    });
+};
+
+exports.postReview = (req, res, next) => {
+    const {owner, title, review_body, designer, category} = req.body;
+    addReview(owner, title, review_body, designer, category).then((result)=>{
         res.status(201).send({review: result})
     }).catch((err)=>{
         next(err)
