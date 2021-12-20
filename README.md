@@ -6,6 +6,15 @@ This project was created to exhibit my abilities in creating a backend server wi
 
 I am open to constructive feedback on this project so if you feel you have any insights into adapting/implenting this API feel free to get in contact.
 
+This API demonstrates features such as:
+
+-Queries
+-Pagination
+-GET, POST, PATCH, DELETE (See the hosted version below for the full list of endpoints; some examples are at the bottom of the README)
+-Handling complex queries
+-SQL Injection prevention
+-TDD development focus
+
 ## Link to hosted version:
 
 https://stephen-board-game-api.herokuapp.com/api
