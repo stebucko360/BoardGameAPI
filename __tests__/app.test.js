@@ -156,16 +156,15 @@ describe('GET /api/reviews', ()=>{
         })
     });
 
-    // only fails on ubuntu - passes on macOS - Due to ordering reqs on toBeSortedBy
-    // test('200: responds with array of objects sorted by title', ()=>{
+    test('200: responds with array of objects sorted by title', ()=>{
 
-    //     return request(app)
-    //     .get('/api/reviews?sort_by=title')
-    //     .expect(200)
-    //     .then((result)=>{
-    //         expect(result.body.reviews).toBeSortedBy('title', { descending: true});
-    //     });
-    // });
+        return request(app)
+        .get('/api/reviews?sort_by=title')
+        .expect(200)
+        .then((result)=>{
+            expect(result.body.reviews).toBeSortedBy('title', { descending: true});
+        });
+    });
     test('200: when not passed a sort_by or order query, resolve to defaults', ()=>{
 
         return request(app)
