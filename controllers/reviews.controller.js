@@ -64,7 +64,8 @@ Promise.all([checkReviewIdExists(review_id), addComment(review_id, username, bod
 
 exports.postReview = (req, res, next) => {
     const {owner, title, review_body, designer, category} = req.body;
-    addReview(owner, title, review_body, designer, category).then((result)=>{
+    Promise.all([checkCategoryExists(category), addReview(owner, title, review_body, designer, category)])
+    .then(([,result])=>{
         res.status(201).send({review: result})
     }).catch((err)=>{
         next(err)
